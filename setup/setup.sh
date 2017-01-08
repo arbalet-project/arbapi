@@ -127,6 +127,7 @@ setup_arbalet_autostart()
     username=$1
     # TODO the file below contains a hardcoded "pi" username, replace with envsubst command in gettext package
     sudo cp setup/arbalet-sequencer.service /lib/systemd/system/arbalet-sequencer.service
+    cp setup/pi.json /home/$username/Arbalet/arbapps/arbalet/tools/sequencer/sequences
     sudo systemctl daemon-reload
     sudo systemctl enable arbalet-sequencer.service
 }
