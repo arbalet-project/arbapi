@@ -1,0 +1,23 @@
+[Unit]
+Description=Arbalet application sequencer
+
+[Service]
+Type=simple
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=tty
+WorkingDirectory=/home/pi/Arbalet/arbapps
+#ExecStartPre=
+ExecStart=/usr/bin/nohup /usr/bin/python -m arbalet.tools.sequencer --hardware --no-gui
+StandardOutput=journal+console
+KillSignal=SIGINT
+SuccessExitStatus=SIGINT
+#Restart=True                     # Production
+#RestartPreventExitStatus=SIGINT  # Development
+ProtectSystem=full
+ProtectHome=read-only             # Production
+
+[Install]
+WantedBy=multi-user.target
+
+# Keep a new line at EOF

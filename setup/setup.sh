@@ -122,6 +122,15 @@ setup_arbalet()
     sudo ln -fs /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
 }
 
+setup_arbalet_autostart()
+{
+    username=$1
+    # TODO the file below contains a hardcoded "pi" username, replace with envsubst command in gettext package
+    sudo cp setup/arbalet-sequencer.service /lib/systemd/system/arbalet-sequencer.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable arbalet-sequencer.service
+}
+
 if [ "$#" -ne 5 ]; then
     echo -e "\e[31mUSAGE: setup.sh user_name user_password hostname json_config_file json_joystick_config_file\e[0m"
     exit
@@ -136,4 +145,4 @@ setup_ssh $1 $script_path
 setup_dependencies
 setup_workspace $4 $5
 setup_arbalet
-
+setup_arbalet_autostart $1
