@@ -53,32 +53,38 @@ EOF
 
 setup_dependencies()
 {
+    echo -e "\e[33mInstalling system dependencies\e[0m."
     # Dependencies in system repository
-    sudo apt-get install -y --force-yes \
-        avahi-autoipd                   \
-        avahi-daemon                    \
-        uptimed                         \
-        git                             \
-        python2.7                       \
-        python-setuptools               \
-        python-pygame                   \
-        python-numpy                    \
-        python-xlib                     \
-        python-opencv                   \
-        python-alsaaudio                \
-        python-dev                      \
-        python-pip                      \
-#        ipython-notebook                \
+    sudo apt-get install -y -q=1 --force-yes \
+        avahi-autoipd                        \
+        avahi-daemon                         \
+        uptimed                              \
+        git                                  \
+        python2.7                            \
+        python-setuptools                    \
+        python-pygame                        \
+        python-numpy                         \
+        python-xlib                          \
+        python-opencv                        \
+        python-alsaaudio                     \
+        python-dev                           \
+        python-pip                           \
+#        ipython-notebook                     \
+    echo -e "Done."
 
     # Dependencies in pypi
+    echo -e "\e[33mInstalling Python dependencies\e[0m."
     sudo pip install python-midi bottle
+    echo -e "Done."
 }
 
 setup_workspace()
 {
     config_file=$1
     config_joy=$2
-    cd "/home/$username" && mkdir Arbalet && cd Arbalet
+    echo -e "\e[33mSetting up Arbalet workspace\e[0m."
+    pwd=`pwd`
+    cd "/home/$username" && mkdir -p Arbalet && cd Arbalet
     git clone --recursive https://github.com/arbalet-project/arbasdk.git
     git clone https://github.com/arbalet-project/arbapps.git
     git clone https://github.com/arbalet-project/arbadoc.git
@@ -87,19 +93,24 @@ setup_workspace()
 config: $config_file.json
 joystick: $config_joy.json
 EOF
-    echo -e "\e[33mInstalling \e[4mArbalet SDK\e[0m."
-    cd "/home/$username/Arbalet/arbasdk" && sudo python setup.py install
+    echo -e "Done."
+    echo -e "\e[33mInstalling Arbalet SDK\e[0m."
+    cd "/home/$username/Arbalet/arbasdk" && sudo python setup.py --quiet install
+    echo -e "Done."
     for dir in /home/"$username"/Arbalet/arbasdk/hardware/raspberrypi/*
     do
         if [ -f "$dir/setup.py" ]; then
             echo -e "\e[33mInstalling Arbalet for Raspberry Pi dependency \e[4m$dir\e[0m."
             cd "$dir"
-            sudo python setup.py install
+            sudo python setup.py --quiet install
             cd -
         fi
     done
-    echo -e "\e[33mInstalling \e[4mArbalet applications\e[0m."
-    cd "/home/$username/Arbalet/arbapps" && sudo python setup.py install
+    echo -e "Done."
+    echo -e "\e[33mInstalling Arbalet applications\e[0m."
+    cd "/home/$username/Arbalet/arbapps" && sudo python setup.py --quiet install
+    cd $pwd
+    echo -e "Done."
 }
 
 setup_ssh()
@@ -110,6 +121,7 @@ setup_ssh()
         mkdir -p  "/home/$1/.ssh"
         cp $authorized_keys "/home/$1/.ssh/authorized_keys"
         sudo update-rc.d ssh enable && sudo invoke-rc.d ssh start
+        echo -e "Done."
     else
         echo -e "No SSH authorized keys file specified"
     fi
@@ -117,33 +129,20 @@ setup_ssh()
 
 setup_arbalet()
 {
+    username=$1
+
+    echo -e "\e[33mSetting up the SPI device\e[0m."
     set_config_var dtparam=spi on $CONFIG  # Enable the SPI device
+    echo -e "Done."
+
+    echo -e "\e[33mSetting up autostart\e[0m."
     sudo systemctl set-default multi-user.target
     sudo ln -fs /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
-}
 
-setup_arbalet_autostart()
-{
-    username=$1
     # TODO the file below contains a hardcoded "pi" username, replace with envsubst command in gettext package
     sudo cp setup/arbalet-sequencer.service /lib/systemd/system/arbalet-sequencer.service
     cp setup/pi.json /home/$username/Arbalet/arbapps/arbalet/tools/sequencer/sequences
     sudo systemctl daemon-reload
     sudo systemctl enable arbalet-sequencer.service
+    echo -e "Done."
 }
-
-if [ "$#" -ne 5 ]; then
-    echo -e "\e[31mUSAGE: setup.sh user_name user_password hostname json_config_file json_joystick_config_file\e[0m"
-    exit
-fi
-
-
-script=`realpath $0`
-script_path=`dirname $script`
-setup_system $3
-setup_user $1 $2
-setup_ssh $1 $script_path
-setup_dependencies
-setup_workspace $4 $5
-setup_arbalet
-setup_arbalet_autostart $1
