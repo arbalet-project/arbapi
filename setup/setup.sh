@@ -39,8 +39,7 @@ setup_user()
     password=$2
 
     echo -e "\e[33mChanging password of \e[4m$username/$password\e[0m."
-    passwd "$username" <<EOF
-raspberry
+    sudo passwd "$username" <<EOF
 $password
 $password
 EOF
