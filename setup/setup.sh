@@ -54,6 +54,7 @@ setup_dependencies()
 {
     echo -e "\e[33mInstalling system dependencies\e[0m."
     # Dependencies in system repository
+    sudo apt-get update
     sudo apt-get install -y -q=1 --force-yes \
         avahi-autoipd                        \
         avahi-daemon                         \
