@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Load subfunctions
+source $setup_path/setup/audio/setup.sh
+
 # Function from https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config
 CONFIG=/boot/config.txt
 set_config_var() {

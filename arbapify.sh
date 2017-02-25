@@ -34,4 +34,8 @@ setup_dependencies
 setup_workspace $config $config_joy
 setup_arbalet $username
 
+# Audio configuration
+setup_audio_dependencies
+setup_audio_loopback $username
+
 cd $pwd
