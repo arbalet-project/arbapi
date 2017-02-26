@@ -20,13 +20,14 @@ else
 fi
 
 pwd=`pwd`
+script=`realpath $0`
+script_path=`dirname $script`
+cd $script_path
 
 # Load installing functions
 source setup/setup.sh
 
 # Execute installing procedure
-script=`realpath $0`
-script_path=`dirname $script`
 setup_system $hostname
 setup_user $username $password
 setup_ssh $username $script_path
