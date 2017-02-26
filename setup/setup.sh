@@ -71,8 +71,12 @@ setup_dependencies()
         python-opencv                        \
         python-alsaaudio                     \
         python-dev                           \
-        python-pip                           \
 #        ipython-notebook                     \
+    echo -e "Done."
+
+    echo -e "\e[33mInstalling pip\e[0m."
+    wget bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
+    sudo python /tmp/get-pip.py
     echo -e "Done."
 
     # Dependencies in pypi
