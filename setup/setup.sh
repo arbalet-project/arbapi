@@ -86,6 +86,7 @@ setup_workspace()
     config_file=$1
     config_joy=$2
     echo -e "\e[33mSetting up Arbalet workspace\e[0m."
+    sed -i.bak -e "s/#alias /alias /g" /home/$username/.bashrc
     pwd=`pwd`
     cd "/home/$username" && mkdir -p Arbalet && cd Arbalet
     git clone --recursive https://github.com/arbalet-project/arbasdk.git
