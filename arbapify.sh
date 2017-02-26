@@ -37,5 +37,6 @@ setup_arbalet $username
 # Audio configuration
 setup_audio_dependencies
 setup_audio_loopback $username
+setup_audio_usb_mount
 
 cd $pwd

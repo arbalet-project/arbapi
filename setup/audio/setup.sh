@@ -7,7 +7,15 @@ setup_audio_dependencies()
     sudo apt-get install -y -q=1 --force-yes \
         python-pyaudio                        \
         libportaudio-dev                      \
-        python-pyaudio                        \
+        python-pyaudio
+    echo -e "Done."
+}
+
+setup_audio_usb_mount()
+{
+    echo -e "\e[33mInstalling auto USB mount\e[0m."
+    sudo apt-get install -y -q=1 --force-yes \
+        usbmount
     echo -e "Done."
 }
 
