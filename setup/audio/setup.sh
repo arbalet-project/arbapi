@@ -6,8 +6,7 @@ setup_audio_dependencies()
     # Dependencies in system repository
     sudo apt-get install -y -q=1 --force-yes \
         python-pyaudio                        \
-        libportaudio-dev                      \
-        python-pyaudio
+        libportaudio-dev
     echo -e "Done."
 }
 
