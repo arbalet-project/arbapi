@@ -147,10 +147,15 @@ setup_arbalet()
     sudo systemctl set-default multi-user.target
     sudo ln -fs /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
 
-    # TODO the file below contains a hardcoded "pi" username, replace with envsubst command in gettext package
-    sudo cp setup/arbalet-sequencer.service /lib/systemd/system/arbalet-sequencer.service
-    cp setup/pi.json /home/$username/Arbalet/arbapps/arbalet/tools/sequencer/sequences
+    # TODO the files below contain a hardcoded "pi" username, replace with envsubst command in gettext package
+    sudo cp setup/arbalet-sequencer.service /lib/systemd/system/
+    sudo cp setup/arbalet-dbus.service /lib/systemd/system/
+    sudo cp setup/arbalet-display.service /lib/systemd/system/
+    sudo cp setup/arbalet-events.service /lib/systemd/system/
     sudo systemctl daemon-reload
+    sudo systemctl enable arbalet-dbus.service
+    sudo systemctl enable arbalet-display.service
+    sudo systemctl enable arbalet-events.service
     sudo systemctl enable arbalet-sequencer.service
     echo -e "Done."
 }

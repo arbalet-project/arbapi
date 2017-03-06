@@ -1,0 +1,18 @@
+[Unit]
+Description=Arbalet event manager
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nohup /usr/bin/python -m arbalet.events.server
+StandardOutput=journal
+KillSignal=SIGINT
+SuccessExitStatus=SIGINT
+ProtectSystem=full
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target
+
+# Keep a new line at EOF
+
+

@@ -1,0 +1,18 @@
+[Unit]
+Description=Arbalet display server
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nohup /usr/bin/python -m arbalet.display.server -w -ng
+StandardOutput=journal
+KillSignal=SIGINT
+SuccessExitStatus=SIGINT
+ProtectSystem=full
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target
+
+# Keep a new line at EOF
+
+

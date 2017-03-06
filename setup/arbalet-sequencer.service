@@ -8,7 +8,7 @@ StandardInput=tty
 StandardOutput=tty
 WorkingDirectory=/home/pi/Arbalet/arbapps
 #ExecStartPre=
-ExecStart=/usr/bin/nohup /usr/bin/python -m arbalet.tools.sequencer --hardware --no-gui --sequence sequences/pi.json
+ExecStart=/usr/bin/nohup /usr/bin/python -m arbalet.services.sequencer
 StandardOutput=journal+console
 KillSignal=SIGINT
 SuccessExitStatus=SIGINT
@@ -21,3 +21,4 @@ ProtectHome=read-only             # Production
 WantedBy=multi-user.target
 
 # Keep a new line at EOF
+
