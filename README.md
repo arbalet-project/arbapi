@@ -1,8 +1,19 @@
 # Arbalet Pi
 The repository contains scripts to setup a Raspberry Pi as an Arbalet workstation.
 
+## Hardware wiring
+The default configuration considers that you're using the `SPI MOSI (GPIO 10)` pin to connect your LED strip. Here is how to connect the input side of the WS2812B strip:
+
+* red: power supply +5V
+* green or yellow: GPIO 10 (data pin)
+* black: power supply GND
+
+Although the Pi and the strips are not using the same high level voltage, experience shows that this works fine anyway, but any serious project should add a level shifter on the data pin. However you might experience artifacts (flashes) with this technique. 
+
+The install procedure hereunder will configure your Pi for `GPIO 10`. You can always modify the [configuration file](https://github.com/arbalet-project/arbasdk/tree/master/arbalet/config) afterwards to use an Arduino connected to your Pi instead, or even PWM on `GPIO 18` (WIP, but requires root access).
+
 ## Authorized SSH keys (optional)
-Before running the script, eventually add SSH keys to the file `authorized_keys` to be able to connect to the Arbalet Pi from your workstation without password prompt.
+Before running the script, optionally add SSH keys to the file `authorized_keys` to be able to connect to the Arbalet Pi from your workstation without password prompt.
 Run the command below on your workstation to get the public key to be pasted in `authorized_keys`:
 ```
 cat ~/.ssh/id_rsa.pub
